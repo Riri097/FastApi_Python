@@ -1,0 +1,59 @@
+https://github.com/kajisaab/fastapi-scaffold
+variables:- int, float, boolean, Nonetype
+True or false (Truthy value and Falsy value)
+
+# from fastapi import FastAPI
+
+# app = FastAPI()
+# @app.get("/")
+# def home():
+#     return {"message": "Hello, World!"}
+
+is_active = True
+print (True + True)
+
+result = None
+test_result = ""
+print(result is None)
+print(test_result == None)
+
+#conversion
+user_input = 12.8
+print(int(user_input))  
+
+
+#Try Catch Error handling 
+try:
+    text = "10"
+    print(int(text))
+except (ValueError, TypeError) as e:
+    print("Never use bare except!")
+    print(f"Error aayooooooooooooo: {e}")
+finally:
+    print("Finish vayo haiii")
+
+#string interpolation
+firstname = "Rija"
+lastname = "Chaulagain"
+print(f"My first name is {firstname} and my last name is  {lastname}")
+
+# def set_age(age) -> None:
+#     if not isinstance (age, int):
+#         print("Not age")
+#         return
+#     if age < 0:
+#         print("Age cannot be negative")
+
+# set_age("True")
+
+#raise exception
+def set_age(age) -> None:
+    if not isinstance (age, int):
+        raise TypeError(f"Age must be an integer.{age} is not a integer")
+    if age < 0:
+        print("Age cannot be negative")
+
+try:
+    set_age("True")
+except TypeError as e:
+    print(f"Error: {e}")
