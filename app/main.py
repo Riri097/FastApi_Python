@@ -1,5 +1,25 @@
+from collections.abc import AsyncGenerator
+
 from fastapi import FastAPI
 from fastapi import APIRouter
+from app.core.config import get_settings
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async  def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    #------startup code------
+
+    # we need to load config variables (Settings).
+    settings = get_settings()
+    print("Welcome to server")
+
+    #steps will freeze here but the application will be in running state until the shutdown event is triggered.
+    yield 
+
+    #------shutdown code------
+    print ("Application is shutting down...")
+
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -8,6 +28,7 @@ def create_app() -> FastAPI:
         description="A scaffold for building FastAPI applications.",
         docs_url="/docs",
         redoc_url="/redoc",
+        lifespan=lifespan
     )
 
     router = APIRouter(prefix="/api/v1")

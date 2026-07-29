@@ -57,3 +57,18 @@ try:
     set_age("True")
 except TypeError as e:
     print(f"Error: {e}")
+
+//oops
+//basic class
+snakecase = "snake_case"
+pascalcase = "PascalCase"
+camelcase = "camelCase"
+
+//dunder method or magic methods or special methods. 
+dunder methods are special methods in Python that have double underscores at the beginning and 
+end of their names. Dunder methods allow you to define how objects of a class behave with respect 
+to built-in operations, such as addition, subtraction, string representation, and more.
+__name__ = "__main__"
+
+
+yield use vako function haru always be async function
