@@ -72,3 +72,14 @@ __name__ = "__main__"
 
 
 yield use vako function haru always be async function
+
+async function 
+coroutine function that can be paused and resumed, allowing for asynchronous programming.
+
+list comprehension
+
+solid principle
+singleton pattern
+dependency injection pattern
+
+middleware concept

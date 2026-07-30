@@ -1,10 +1,8 @@
 from collections.abc import AsyncGenerator
-
 from fastapi import FastAPI
 from fastapi import APIRouter
 from app.core.config import get_settings
 from contextlib import asynccontextmanager
-
 
 @asynccontextmanager
 async  def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
