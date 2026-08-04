@@ -1,21 +1,19 @@
-
 from functools import lru_cache
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from pydantic_settings import SettingsConfigDict, BaseSettings
 
-class Settings(BaseSettings) :
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-        extra="ignore",
-    )
+# App configuration, values are read from .env
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-# lru_cache is used to cache the settings object so that it is only created once and reused 
-# throughout the application. This is important because creating a new settings object for every 
-# request would be inefficient and could lead to inconsistencies if the environment variables change
-#  during the application's lifetime.
+    DATABASE_URL: str
+    JWT_SECRET: str
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
 
+settings = get_settings()
