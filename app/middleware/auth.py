@@ -1,4 +1,5 @@
-from fastapi import HTTPException, Request
+from fastapi import HTTPException, Request, Response
+from starlette.middleware.base import RequestResponseEndpoint
 
 from app.core.security import decode_access_token
 
@@ -8,7 +9,7 @@ BEARER_PREFIX = "Bearer "
 # Best-effort only: attaches the user id to request.state for logging/tracing.
 # Does NOT enforce auth - route-level access control still goes through
 # Depends(get_current_user) in app/api/deps.py, so a missing/bad token here is not an error.
-async def attach_user_id(request: Request, call_next):
+async def attach_user_id(request: Request, call_next: RequestResponseEndpoint) -> Response:
     request.state.user_id = None
     auth_header = request.headers.get("Authorization", "")
     if auth_header.startswith(BEARER_PREFIX):

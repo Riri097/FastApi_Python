@@ -1,20 +1,6 @@
-from collections.abc import AsyncGenerator
+# The actual engine/session setup now lives in app/core/database.py (matching
+# the scaffold's layout). This re-export exists so model files can keep doing
+# `from app.db.session import Base` without needing to change.
+from app.core.database import Base, async_session_maker, engine, get_db
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
-
-from app.core.config import settings
-
-engine = create_async_engine(settings.DATABASE_URL)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
-
-
-# Base class all models inherit from
-class Base(DeclarativeBase):
-    pass
-
-
-# FastAPI dependency that yields a DB session per request
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
-        yield session
+__all__ = ["Base", "async_session_maker", "engine", "get_db"]

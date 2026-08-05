@@ -1,5 +1,6 @@
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
 from fastapi import HTTPException, status
 from jose import JWTError, jwt
@@ -27,7 +28,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 # Shared JWT encode helper, "type" claim tells access and refresh tokens apart.
 # "jti" keeps tokens unique even if minted for the same user within the same second.
 def _create_token(user_id: uuid.UUID, expires_delta: timedelta, token_type: str) -> str:
-    expire = datetime.now(timezone.utc) + expires_delta
+    expire = datetime.now(UTC) + expires_delta
     payload = {"sub": str(user_id), "exp": expire, "type": token_type, "jti": uuid.uuid4().hex}
     return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
 
@@ -42,7 +43,7 @@ def create_refresh_token(user_id: uuid.UUID) -> str:
     return _create_token(user_id, expires_delta, "refresh")
 
 
-def _decode_token(token: str, expected_type: str) -> dict:
+def _decode_token(token: str, expected_type: str) -> dict[str, Any]:
     try:
         payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
     except JWTError as exc:
@@ -52,9 +53,9 @@ def _decode_token(token: str, expected_type: str) -> dict:
     return payload
 
 
-def decode_access_token(token: str) -> dict:
+def decode_access_token(token: str) -> dict[str, Any]:
     return _decode_token(token, "access")
 
 
-def decode_refresh_token(token: str) -> dict:
+def decode_refresh_token(token: str) -> dict[str, Any]:
     return _decode_token(token, "refresh")

@@ -5,8 +5,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, users
-from app.db.session import Base, engine
+from app.api.router import api_router
+from app.core.database import Base, engine
 from app.middleware.auth import attach_user_id
 from app.middleware.correlation_id import add_correlation_id
 from app.middleware.exception_handler import handle_unhandled_exception
@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 
 # Create tables on startup instead of using Alembic, simplest option for this project
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
@@ -39,5 +39,4 @@ app.add_middleware(
 )
 app.add_exception_handler(Exception, handle_unhandled_exception)
 
-app.include_router(auth.router)
-app.include_router(users.router)
+app.include_router(api_router)
